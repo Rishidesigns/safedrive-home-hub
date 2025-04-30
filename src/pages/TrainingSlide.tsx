@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TrainingSlideViewer from '@/components/TrainingSlideViewer';
+import TrainingQuiz from '@/components/TrainingQuiz';
 import { safeDrivingPracticesModule } from '@/data/safetyTrainingData';
+import { getQuizByModuleId } from '@/data/quizData';
 import { toast } from '@/hooks/use-toast';
 
 // In a real app, this would fetch the module based on the ID
@@ -17,9 +19,11 @@ const getModuleById = (id: string) => {
 const TrainingSlide: React.FC = () => {
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
+  const [showQuiz, setShowQuiz] = useState(false);
   
   // Get the module content
   const moduleContent = moduleId ? getModuleById(moduleId) : null;
+  const quizContent = moduleId ? getQuizByModuleId(moduleId) : null;
   
   if (!moduleContent) {
     return (
@@ -36,9 +40,22 @@ const TrainingSlide: React.FC = () => {
   }
   
   const handleCompleteModule = () => {
+    if (quizContent) {
+      setShowQuiz(true);
+    } else {
+      // If there's no quiz, just complete the module
+      toast({
+        title: "Module Completed!",
+        description: "You have earned badges and points for completing this module.",
+      });
+      navigate('/');
+    }
+  };
+  
+  const handleCompleteQuiz = (score: number) => {
     toast({
-      title: "Module Completed!",
-      description: "You have earned badges and points for completing this module.",
+      title: "Quiz Completed!",
+      description: `You scored ${score} points and earned badges!`,
     });
     navigate('/');
   };
@@ -47,7 +64,12 @@ const TrainingSlide: React.FC = () => {
     navigate('/');
   };
 
-  return (
+  return showQuiz && quizContent ? (
+    <TrainingQuiz 
+      quizContent={quizContent}
+      onCompleteQuiz={handleCompleteQuiz}
+    />
+  ) : (
     <TrainingSlideViewer 
       moduleContent={moduleContent}
       onCompleteModule={handleCompleteModule}
