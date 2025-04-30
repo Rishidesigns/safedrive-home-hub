@@ -9,7 +9,115 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      quizzes: {
+        Row: {
+          correct_option: string
+          created_at: string
+          explanation: string | null
+          id: string
+          module_id: string
+          option_a: string
+          option_b: string
+          option_c: string | null
+          option_d: string | null
+          question: string
+        }
+        Insert: {
+          correct_option: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          module_id: string
+          option_a: string
+          option_b: string
+          option_c?: string | null
+          option_d?: string | null
+          question: string
+        }
+        Update: {
+          correct_option?: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          module_id?: string
+          option_a?: string
+          option_b?: string
+          option_c?: string | null
+          option_d?: string | null
+          question?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "training_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      slides: {
+        Row: {
+          created_at: string
+          description: string | null
+          hero_image_url: string | null
+          hero_text: string
+          id: string
+          module_id: string
+          order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          hero_image_url?: string | null
+          hero_text: string
+          id?: string
+          module_id: string
+          order: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          hero_image_url?: string | null
+          hero_text?: string
+          id?: string
+          module_id?: string
+          order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slides_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "training_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_modules: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          status: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          status: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
