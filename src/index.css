@@ -81,4 +81,15 @@
   .badge-icon {
     @apply w-8 h-8 text-moveinsync-orange;
   }
+
+  /* Animation for badges when earned */
+  @keyframes badge-earned {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  .animate-badge-earned {
+    animation: badge-earned 1s ease-in-out infinite;
+  }
 }

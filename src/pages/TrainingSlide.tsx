@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TrainingSlideViewer from '@/components/TrainingSlideViewer';
 import TrainingQuiz from '@/components/TrainingQuiz';
+import SuccessScreen from '@/components/SuccessScreen';
 import { safeDrivingPracticesModule } from '@/data/safetyTrainingData';
 import { getQuizByModuleId } from '@/data/quizData';
 import { toast } from '@/hooks/use-toast';
@@ -20,10 +21,15 @@ const TrainingSlide: React.FC = () => {
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [quizScore, setQuizScore] = useState(0);
   
   // Get the module content
   const moduleContent = moduleId ? getModuleById(moduleId) : null;
   const quizContent = moduleId ? getQuizByModuleId(moduleId) : null;
+  
+  // Calculate rewards based on module content
+  const badgesEarned = moduleContent ? moduleContent.slides.length : 0;
   
   if (!moduleContent) {
     return (
@@ -43,20 +49,19 @@ const TrainingSlide: React.FC = () => {
     if (quizContent) {
       setShowQuiz(true);
     } else {
-      // If there's no quiz, just complete the module
-      toast({
-        title: "Module Completed!",
-        description: "You have earned badges and points for completing this module.",
-      });
-      navigate('/');
+      // If there's no quiz, just complete the module and show success
+      setShowSuccess(true);
     }
   };
   
   const handleCompleteQuiz = (score: number) => {
-    toast({
-      title: "Quiz Completed!",
-      description: `You scored ${score} points and earned badges!`,
-    });
+    setQuizScore(score);
+    setShowSuccess(true);
+  };
+  
+  const handleContinueToNextModule = () => {
+    // In a real app, you would navigate to the next module
+    // For now, just go back to the home screen
     navigate('/');
   };
   
@@ -64,12 +69,30 @@ const TrainingSlide: React.FC = () => {
     navigate('/');
   };
 
-  return showQuiz && quizContent ? (
-    <TrainingQuiz 
-      quizContent={quizContent}
-      onCompleteQuiz={handleCompleteQuiz}
-    />
-  ) : (
+  // Render success screen if module and quiz are completed
+  if (showSuccess) {
+    return (
+      <SuccessScreen 
+        badgesEarned={badgesEarned}
+        pointsEarned={quizScore}
+        moduleName={moduleContent.name}
+        onContinue={handleContinueToNextModule}
+      />
+    );
+  }
+
+  // Render quiz if module is completed
+  if (showQuiz && quizContent) {
+    return (
+      <TrainingQuiz 
+        quizContent={quizContent}
+        onCompleteQuiz={handleCompleteQuiz}
+      />
+    );
+  }
+  
+  // Render slide viewer by default
+  return (
     <TrainingSlideViewer 
       moduleContent={moduleContent}
       onCompleteModule={handleCompleteModule}
