@@ -1,21 +1,17 @@
-
 import React from 'react';
 import { Badge, Award, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 interface TrainingHeroCardProps {
   badgesEarned: number;
   totalPoints: number;
   modulesCompleted: number;
 }
-
 const TrainingHeroCard: React.FC<TrainingHeroCardProps> = ({
   badgesEarned,
   totalPoints,
-  modulesCompleted,
+  modulesCompleted
 }) => {
-  return (
-    <div className="bg-gradient-to-br from-moveinsync-orange to-moveinsync-purple rounded-2xl p-5 shadow-lg text-white mb-6">
+  return <div className="bg-gradient-to-br from-moveinsync-blue to-moveinsync-purple rounded-2xl p-5 shadow-lg text-white mb-6">
       <h2 className="text-lg font-semibold mb-4">Your Training Progress</h2>
       
       <div className="grid grid-cols-3 gap-2">
@@ -37,8 +33,6 @@ const TrainingHeroCard: React.FC<TrainingHeroCardProps> = ({
           <span className="text-xs text-white/80">Completed</span>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default TrainingHeroCard;
