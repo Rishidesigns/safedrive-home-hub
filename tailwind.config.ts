@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// MoveInSync custom colors
+				moveinsync: {
+					orange: '#FF7A00',
+					teal: '#00BFB2',
+					purple: '#9747FF',
+					blue: '#0080FF',
+					green: '#2ECC71',
+					red: '#E74C3C',
+					yellow: '#F1C40F',
+					gray: '#95A5A6',
+				},
+				status: {
+					pending: '#F1C40F', // yellow
+					overdue: '#E74C3C', // red
+					completed: '#2ECC71', // green
 				}
 			},
 			borderRadius: {
@@ -84,11 +101,34 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'pulse-light': {
+					'0%, 100%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.7',
+					},
+				},
+				'badge-earned': {
+					'0%': {
+						transform: 'scale(0.8)',
+						opacity: '0',
+					},
+					'70%': {
+						transform: 'scale(1.1)',
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1',
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-light': 'pulse-light 2s ease-in-out infinite',
+				'badge-earned': 'badge-earned 0.5s ease-out forwards',
 			}
 		}
 	},
