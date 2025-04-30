@@ -27,6 +27,7 @@ const Index: React.FC = () => {
           {trainingModules.map((module) => (
             <TrainingCard 
               key={module.id}
+              id={module.id}
               name={module.name}
               slides={module.slides}
               badges={module.badges}
