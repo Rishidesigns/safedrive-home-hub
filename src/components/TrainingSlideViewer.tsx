@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Medicine, Droplet } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Droplet } from 'lucide-react';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
@@ -47,7 +47,8 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
       case 3:
         return <Utensils className="h-20 w-20 text-moveinsync-green" />;
       case 4:
-        return <Medicine className="h-20 w-20 text-moveinsync-red" />;
+        // Replace Medicine with Clock icon for health-related issues
+        return <Clock className="h-20 w-20 text-moveinsync-red" />;
       case 5:
         return <Clock className="h-20 w-20 text-moveinsync-purple" />;
       default:
