@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Droplet } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Droplet, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
@@ -99,9 +99,19 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   return (
     <div className="flex flex-col h-full min-h-[80vh] bg-white" tabIndex={0} onKeyDown={handleKeyDown}>
       {/* Module header */}
-      <div className="bg-moveinsync-orange/10 px-4 py-3 text-center">
-        <h2 className="font-medium text-slate-950 text-left text-2xl">{moduleContent.name}</h2>
-        <div className="text-xs text-gray-600 mt-1 my-0 bg-transparent">
+      <div className="bg-moveinsync-orange/10 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onExitModule} 
+            className="mr-2 text-gray-700"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h2 className="font-medium text-slate-950 text-xl flex-1">{moduleContent.name}</h2>
+        </div>
+        <div className="text-xs text-gray-600 mt-1 my-0 bg-transparent text-center">
           Slide {currentSlideIndex + 1} of {totalSlides}
         </div>
       </div>
