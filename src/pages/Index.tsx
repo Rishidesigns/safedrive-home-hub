@@ -5,17 +5,35 @@ import TrainingHeroCard from '@/components/TrainingHeroCard';
 import TrainingCard from '@/components/TrainingCard';
 import TrainingHeader from '@/components/TrainingHeader';
 import { useQuery } from '@tanstack/react-query';
-import { getTrainingModules } from '@/services/trainingService';
+import { getTrainingModules, getSlideCount } from '@/services/trainingService';
 import { TrainingStatus } from '@/components/StatusChip';
 
 const Index: React.FC = () => {
   // Fetch published training modules
-  const { data: modules = [], isLoading } = useQuery({
+  const { data: modules = [], isLoading: isLoadingModules } = useQuery({
     queryKey: ['publishedModules'],
     queryFn: async () => {
       const allModules = await getTrainingModules();
       return allModules.filter(module => module.status === 'published');
     }
+  });
+
+  // For each module, fetch its slide count
+  const { data: modulesWithSlideCounts = [], isLoading: isLoadingCounts } = useQuery({
+    queryKey: ['moduleSlideCounts', modules],
+    queryFn: async () => {
+      const enrichedModules = await Promise.all(
+        modules.map(async (module) => {
+          const slideCount = await getSlideCount(module.id!);
+          return {
+            ...module,
+            slideCount
+          };
+        })
+      );
+      return enrichedModules;
+    },
+    enabled: modules.length > 0
   });
 
   // Calculate user progress summary
@@ -24,6 +42,8 @@ const Index: React.FC = () => {
     totalPoints: 150,
     modulesCompleted: 1
   };
+
+  const isLoading = isLoadingModules || isLoadingCounts;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-6">
@@ -46,13 +66,13 @@ const Index: React.FC = () => {
           <div className="text-center py-4">Loading training modules...</div>
         ) : (
           <div className="space-y-3">
-            {modules.map((module) => (
+            {modulesWithSlideCounts.map((module) => (
               <TrainingCard 
                 key={module.id}
                 id={module.id!}
                 name={module.title}
-                slides={12} // Fixed value instead of undefined[]
-                badges={3}
+                slides={module.slideCount} // Use the actual slide count
+                badges={module.slideCount} // Set badges equal to slide count
                 status={"pending" as TrainingStatus} // Use a valid TrainingStatus
               />
             ))}

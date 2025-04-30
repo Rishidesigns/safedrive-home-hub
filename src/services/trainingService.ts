@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export interface TrainingModule {
@@ -95,6 +94,17 @@ export const getSlides = async (moduleId: string) => {
   
   if (error) throw error;
   return data;
+};
+
+// Get count of slides for a module
+export const getSlideCount = async (moduleId: string): Promise<number> => {
+  const { count, error } = await supabase
+    .from('slides')
+    .select('*', { count: 'exact', head: true })
+    .eq('module_id', moduleId);
+  
+  if (error) throw error;
+  return count || 0;
 };
 
 export const getSlide = async (id: string) => {
