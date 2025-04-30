@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Droplet, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,7 @@ export interface TrainingSlide {
   title: string;
   content: string;
   visualDescription: string;
+  hero_image_url?: string; // Added hero_image_url field
   language?: 'en' | 'hi' | 'kn'; // English, Hindi, Kannada
 }
 
@@ -37,25 +38,6 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   const currentSlide = moduleContent.slides[currentSlideIndex];
   const progressPercentage = (currentSlideIndex + 1) / totalSlides * 100;
   
-  // Function to get the appropriate icon for each slide
-  const getSlideIcon = (slideId: number) => {
-    switch (slideId) {
-      case 1:
-        return <CarFront className="h-20 w-20 text-moveinsync-orange" />;
-      case 2:
-        return <Bed className="h-20 w-20 text-moveinsync-blue" />;
-      case 3:
-        return <Utensils className="h-20 w-20 text-moveinsync-green" />;
-      case 4:
-        // Replace Medicine with Clock icon for health-related issues
-        return <Clock className="h-20 w-20 text-moveinsync-red" />;
-      case 5:
-        return <Clock className="h-20 w-20 text-moveinsync-purple" />;
-      default:
-        return <Droplet className="h-20 w-20 text-moveinsync-teal" />;
-    }
-  };
-
   // Function to get background style for each slide
   const getSlideBackground = (slideId: number) => {
     switch (slideId) {
@@ -124,14 +106,19 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
         {/* Slide title */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4">{currentSlide.title}</h1>
         
-        {/* Visual - Replace text with actual illustration */}
+        {/* Visual - Now uses the hero_image_url from the slide data */}
         <div className={`w-full aspect-video rounded-xl mb-6 flex flex-col items-center justify-center p-8 ${getSlideBackground(currentSlide.id)}`}>
-          <div className="flex flex-col items-center justify-center">
-            {getSlideIcon(currentSlide.id)}
+          {currentSlide.hero_image_url ? (
+            <img 
+              src={currentSlide.hero_image_url} 
+              alt={currentSlide.title} 
+              className="max-h-full max-w-full object-contain"
+            />
+          ) : (
             <div className="mt-4 text-center text-gray-700 font-medium">
               {currentSlide.visualDescription}
             </div>
-          </div>
+          )}
         </div>
         
         {/* Content text */}

@@ -36,12 +36,13 @@ const TrainingSlide: React.FC = () => {
     enabled: !!moduleId
   });
   
-  // Create formatted slide data for the viewer component
+  // Create formatted slide data for the viewer component - now with hero_image_url
   const formattedSlides = slides?.map(slide => ({
     id: Number(slide.id?.split('-')[0] || 0),
     title: slide.hero_text,
     content: slide.description || '',
     visualDescription: '',
+    hero_image_url: slide.hero_image_url || '',
     order: slide.order
   })).sort((a, b) => a.order - b.order) || [];
   
