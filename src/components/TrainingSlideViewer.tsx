@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Medicine, Droplet } from 'lucide-react';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
@@ -19,11 +20,13 @@ export interface TrainingModuleContent {
   name: string;
   slides: TrainingSlide[];
 }
+
 interface TrainingSlideViewerProps {
   moduleContent: TrainingModuleContent;
   onCompleteModule?: () => void;
   onExitModule?: () => void;
 }
+
 const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   moduleContent,
   onCompleteModule,
@@ -33,6 +36,43 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   const totalSlides = moduleContent.slides.length;
   const currentSlide = moduleContent.slides[currentSlideIndex];
   const progressPercentage = (currentSlideIndex + 1) / totalSlides * 100;
+  
+  // Function to get the appropriate icon for each slide
+  const getSlideIcon = (slideId: number) => {
+    switch (slideId) {
+      case 1:
+        return <CarFront className="h-20 w-20 text-moveinsync-orange" />;
+      case 2:
+        return <Bed className="h-20 w-20 text-moveinsync-blue" />;
+      case 3:
+        return <Utensils className="h-20 w-20 text-moveinsync-green" />;
+      case 4:
+        return <Medicine className="h-20 w-20 text-moveinsync-red" />;
+      case 5:
+        return <Clock className="h-20 w-20 text-moveinsync-purple" />;
+      default:
+        return <Droplet className="h-20 w-20 text-moveinsync-teal" />;
+    }
+  };
+
+  // Function to get background style for each slide
+  const getSlideBackground = (slideId: number) => {
+    switch (slideId) {
+      case 1:
+        return "bg-gradient-to-br from-orange-50 to-yellow-100";
+      case 2:
+        return "bg-gradient-to-br from-blue-50 to-indigo-100";
+      case 3:
+        return "bg-gradient-to-br from-green-50 to-emerald-100";
+      case 4:
+        return "bg-gradient-to-br from-red-50 to-rose-100";
+      case 5:
+        return "bg-gradient-to-br from-purple-50 to-violet-100";
+      default:
+        return "bg-gradient-to-br from-teal-50 to-cyan-100";
+    }
+  };
+
   const goToNextSlide = () => {
     if (currentSlideIndex < totalSlides - 1) {
       setCurrentSlideIndex(currentSlideIndex + 1);
@@ -40,11 +80,13 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
       onCompleteModule?.();
     }
   };
+  
   const goToPreviousSlide = () => {
     if (currentSlideIndex > 0) {
       setCurrentSlideIndex(currentSlideIndex - 1);
     }
   };
+  
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') {
       goToNextSlide();
@@ -52,7 +94,9 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
       goToPreviousSlide();
     }
   };
-  return <div className="flex flex-col h-full min-h-[80vh] bg-white" tabIndex={0} onKeyDown={handleKeyDown}>
+
+  return (
+    <div className="flex flex-col h-full min-h-[80vh] bg-white" tabIndex={0} onKeyDown={handleKeyDown}>
       {/* Module header */}
       <div className="bg-moveinsync-orange/10 px-4 py-3 text-center">
         <h2 className="font-medium text-slate-950 text-left text-2xl">{moduleContent.name}</h2>
@@ -69,10 +113,14 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
         {/* Slide title */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4">{currentSlide.title}</h1>
         
-        {/* Visual */}
-        <div className="w-full aspect-video bg-gray-100 rounded-xl mb-6 flex items-center justify-center text-center p-4">
-          {/* This would be replaced with an actual image in a real app */}
-          <div className="text-gray-500">{currentSlide.visualDescription}</div>
+        {/* Visual - Replace text with actual illustration */}
+        <div className={`w-full aspect-video rounded-xl mb-6 flex flex-col items-center justify-center p-8 ${getSlideBackground(currentSlide.id)}`}>
+          <div className="flex flex-col items-center justify-center">
+            {getSlideIcon(currentSlide.id)}
+            <div className="mt-4 text-center text-gray-700 font-medium">
+              {currentSlide.visualDescription}
+            </div>
+          </div>
         </div>
         
         {/* Content text */}
@@ -91,6 +139,8 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
           {currentSlideIndex === totalSlides - 1 ? "Finish" : "Next"} <ChevronRight className="ml-1" />
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default TrainingSlideViewer;
