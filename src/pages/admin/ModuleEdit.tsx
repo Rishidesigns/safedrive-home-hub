@@ -60,7 +60,15 @@ const ModuleEdit: React.FC = () => {
 
   // Create module mutation
   const createMutation = useMutation({
-    mutationFn: (data: TrainingModule) => createTrainingModule(data),
+    mutationFn: (data: FormValues) => {
+      // Ensure all required fields are present
+      const moduleData: TrainingModule = {
+        title: data.title,
+        description: data.description || null,
+        status: data.status
+      };
+      return createTrainingModule(moduleData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",
@@ -79,7 +87,15 @@ const ModuleEdit: React.FC = () => {
 
   // Update module mutation
   const updateMutation = useMutation({
-    mutationFn: (data: TrainingModule) => updateTrainingModule(id!, data),
+    mutationFn: (data: FormValues) => {
+      // Ensure all required fields are present
+      const moduleData: TrainingModule = {
+        title: data.title,
+        description: data.description || null,
+        status: data.status
+      };
+      return updateTrainingModule(id!, moduleData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",

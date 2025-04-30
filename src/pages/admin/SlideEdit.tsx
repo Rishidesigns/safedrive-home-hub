@@ -102,7 +102,20 @@ const SlideEdit: React.FC = () => {
 
   // Create slide mutation
   const createMutation = useMutation({
-    mutationFn: (data: Slide) => createSlide(data),
+    mutationFn: (data: FormValues) => {
+      if (!moduleId) throw new Error("Module ID is required");
+      
+      // Ensure all required fields are present
+      const slideData: Slide = {
+        module_id: moduleId,
+        hero_text: data.hero_text,
+        description: data.description || null,
+        hero_image_url: data.hero_image_url || null,
+        order: data.order
+      };
+      
+      return createSlide(slideData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",
@@ -121,7 +134,20 @@ const SlideEdit: React.FC = () => {
 
   // Update slide mutation
   const updateMutation = useMutation({
-    mutationFn: (data: Slide) => updateSlide(slideId!, data),
+    mutationFn: (data: FormValues) => {
+      if (!moduleId || !slideId) throw new Error("Module ID and Slide ID are required");
+      
+      // Ensure all required fields are present
+      const slideData: Slide = {
+        module_id: moduleId,
+        hero_text: data.hero_text,
+        description: data.description || null,
+        hero_image_url: data.hero_image_url || null,
+        order: data.order
+      };
+      
+      return updateSlide(slideId, slideData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",
@@ -167,17 +193,10 @@ const SlideEdit: React.FC = () => {
 
   // Form submission handler
   const onSubmit = (data: FormValues) => {
-    if (!moduleId) return;
-    
-    const slideData: Slide = {
-      ...data,
-      module_id: moduleId
-    };
-    
     if (isEditMode) {
-      updateMutation.mutate(slideData);
+      updateMutation.mutate(data);
     } else {
-      createMutation.mutate(slideData);
+      createMutation.mutate(data);
     }
   };
 

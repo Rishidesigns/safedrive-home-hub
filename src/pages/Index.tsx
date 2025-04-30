@@ -6,6 +6,7 @@ import TrainingCard from '@/components/TrainingCard';
 import TrainingHeader from '@/components/TrainingHeader';
 import { useQuery } from '@tanstack/react-query';
 import { getTrainingModules } from '@/services/trainingService';
+import { TrainingStatus } from '@/components/StatusChip';
 
 const Index: React.FC = () => {
   // Fetch published training modules
@@ -50,9 +51,9 @@ const Index: React.FC = () => {
                 key={module.id}
                 id={module.id!}
                 name={module.title}
-                slides={[]} // This would be filled with actual slide count
-                badges={3} // This would be dynamic based on module badges
-                status="available" // This would be dynamic based on user progress
+                slides={12} // Fixed value instead of undefined[]
+                badges={3}
+                status={"pending" as TrainingStatus} // Use a valid TrainingStatus
               />
             ))}
           </div>

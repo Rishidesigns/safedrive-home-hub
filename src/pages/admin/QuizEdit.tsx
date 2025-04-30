@@ -72,7 +72,7 @@ const QuizEdit: React.FC = () => {
       option_b: '',
       option_c: '',
       option_d: '',
-      correct_option: 'A',
+      correct_option: 'A' as const,
       explanation: ''
     }
   });
@@ -86,7 +86,7 @@ const QuizEdit: React.FC = () => {
         option_b: quiz.option_b,
         option_c: quiz.option_c || '',
         option_d: quiz.option_d || '',
-        correct_option: quiz.correct_option,
+        correct_option: quiz.correct_option as 'A' | 'B' | 'C' | 'D',
         explanation: quiz.explanation || ''
       });
     }
@@ -94,7 +94,23 @@ const QuizEdit: React.FC = () => {
 
   // Create quiz mutation
   const createMutation = useMutation({
-    mutationFn: (data: Quiz) => createQuiz(data),
+    mutationFn: (data: FormValues) => {
+      if (!moduleId) throw new Error("Module ID is required");
+      
+      // Ensure all required fields are present
+      const quizData: Quiz = {
+        module_id: moduleId,
+        question: data.question,
+        option_a: data.option_a,
+        option_b: data.option_b,
+        option_c: data.option_c || null,
+        option_d: data.option_d || null,
+        correct_option: data.correct_option,
+        explanation: data.explanation || null
+      };
+      
+      return createQuiz(quizData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",
@@ -113,7 +129,23 @@ const QuizEdit: React.FC = () => {
 
   // Update quiz mutation
   const updateMutation = useMutation({
-    mutationFn: (data: Quiz) => updateQuiz(quizId!, data),
+    mutationFn: (data: FormValues) => {
+      if (!moduleId || !quizId) throw new Error("Module ID and Quiz ID are required");
+      
+      // Ensure all required fields are present
+      const quizData: Quiz = {
+        module_id: moduleId,
+        question: data.question,
+        option_a: data.option_a,
+        option_b: data.option_b,
+        option_c: data.option_c || null,
+        option_d: data.option_d || null,
+        correct_option: data.correct_option,
+        explanation: data.explanation || null
+      };
+      
+      return updateQuiz(quizId, quizData);
+    },
     onSuccess: () => {
       toast({
         title: "Success",
@@ -132,17 +164,10 @@ const QuizEdit: React.FC = () => {
 
   // Form submission handler
   const onSubmit = (data: FormValues) => {
-    if (!moduleId) return;
-    
-    const quizData: Quiz = {
-      ...data,
-      module_id: moduleId
-    };
-    
     if (isEditMode) {
-      updateMutation.mutate(quizData);
+      updateMutation.mutate(data);
     } else {
-      createMutation.mutate(quizData);
+      createMutation.mutate(data);
     }
   };
 
