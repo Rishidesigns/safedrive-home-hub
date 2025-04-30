@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock, CarFront, Bed, Utensils, Droplet, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
@@ -20,13 +19,11 @@ export interface TrainingModuleContent {
   name: string;
   slides: TrainingSlide[];
 }
-
 interface TrainingSlideViewerProps {
   moduleContent: TrainingModuleContent;
   onCompleteModule?: () => void;
   onExitModule?: () => void;
 }
-
 const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   moduleContent,
   onCompleteModule,
@@ -36,7 +33,7 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
   const totalSlides = moduleContent.slides.length;
   const currentSlide = moduleContent.slides[currentSlideIndex];
   const progressPercentage = (currentSlideIndex + 1) / totalSlides * 100;
-  
+
   // Function to get the appropriate icon for each slide
   const getSlideIcon = (slideId: number) => {
     switch (slideId) {
@@ -73,7 +70,6 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
         return "bg-gradient-to-br from-teal-50 to-cyan-100";
     }
   };
-
   const goToNextSlide = () => {
     if (currentSlideIndex < totalSlides - 1) {
       setCurrentSlideIndex(currentSlideIndex + 1);
@@ -81,13 +77,11 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
       onCompleteModule?.();
     }
   };
-  
   const goToPreviousSlide = () => {
     if (currentSlideIndex > 0) {
       setCurrentSlideIndex(currentSlideIndex - 1);
     }
   };
-  
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') {
       goToNextSlide();
@@ -95,18 +89,11 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
       goToPreviousSlide();
     }
   };
-
-  return (
-    <div className="flex flex-col h-full min-h-[80vh] bg-white" tabIndex={0} onKeyDown={handleKeyDown}>
+  return <div className="flex flex-col h-full min-h-[80vh] bg-white" tabIndex={0} onKeyDown={handleKeyDown}>
       {/* Module header */}
       <div className="bg-moveinsync-orange/10 px-4 py-3">
         <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onExitModule} 
-            className="mr-2 text-gray-700"
-          >
+          <Button variant="ghost" size="icon" onClick={onExitModule} className="mr-2 text-gray-700">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h2 className="font-medium text-slate-950 text-xl flex-1">{moduleContent.name}</h2>
@@ -125,7 +112,7 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
         <h1 className="text-2xl font-bold text-gray-800 mb-4">{currentSlide.title}</h1>
         
         {/* Visual - Replace text with actual illustration */}
-        <div className={`w-full aspect-video rounded-xl mb-6 flex flex-col items-center justify-center p-8 ${getSlideBackground(currentSlide.id)}`}>
+        <div className="slide.hero_image_url\n">
           <div className="flex flex-col items-center justify-center">
             {getSlideIcon(currentSlide.id)}
             <div className="mt-4 text-center text-gray-700 font-medium">
@@ -150,8 +137,6 @@ const TrainingSlideViewer: React.FC<TrainingSlideViewerProps> = ({
           {currentSlideIndex === totalSlides - 1 ? "Finish" : "Next"} <ChevronRight className="ml-1" />
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default TrainingSlideViewer;
