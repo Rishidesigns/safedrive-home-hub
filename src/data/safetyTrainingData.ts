@@ -8,7 +8,7 @@ export const safeDrivingPracticesModule: TrainingModuleContent = {
     {
       id: 1,
       title: 'Your Safety Comes First',
-      content: 'A safe driver is a reliable driver. Let's learn how to keep yourself fit and alert while on duty. ಮುಖ್ಯವಾಗಿದೆ.',
+      content: "A safe driver is a reliable driver. Let's learn how to keep yourself fit and alert while on duty. ಮುಖ್ಯವಾಗಿದೆ.",
       visualDescription: 'Smiling driver with seatbelt, fresh morning light'
     },
     {
