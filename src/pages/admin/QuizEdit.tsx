@@ -85,7 +85,8 @@ const QuizEdit: React.FC = () => {
         option_a: quiz.option_a,
         option_b: quiz.option_b,
         option_c: quiz.option_c || '',
-        option_d: quiz.option_d || '',
+        // Check if option_d exists on the quiz object before accessing it
+        option_d: quiz.option_d !== undefined ? quiz.option_d : '',
         correct_option: quiz.correct_option as 'A' | 'B' | 'C' | 'D',
         explanation: quiz.explanation || ''
       });
