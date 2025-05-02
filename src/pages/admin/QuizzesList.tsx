@@ -133,18 +133,6 @@ const QuizzesList: React.FC = () => {
                       <span className="font-medium text-sm">C:</span> {quiz.option_c}
                     </div>
                   )}
-                  
-                  {quiz.option_d && (
-                    <div className={`p-3 rounded-md border ${quiz.correct_option === 'D' ? 'bg-green-50 border-green-200' : 'bg-gray-50'}`}>
-                      {quiz.correct_option === 'D' && (
-                        <Badge className="bg-green-500 mb-1 flex w-fit items-center gap-1">
-                          <Check size={12} />
-                          Correct
-                        </Badge>
-                      )}
-                      <span className="font-medium text-sm">D:</span> {quiz.option_d}
-                    </div>
-                  )}
                 </div>
                 
                 {quiz.explanation && (
