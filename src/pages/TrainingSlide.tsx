@@ -56,8 +56,7 @@ const TrainingSlide: React.FC = () => {
       options: [
         { id: 'A', text: q.option_a, isCorrect: q.correct_option === 'A', explanation: q.explanation || undefined },
         { id: 'B', text: q.option_b, isCorrect: q.correct_option === 'B', explanation: q.explanation || undefined },
-        ...(q.option_c ? [{ id: 'C', text: q.option_c, isCorrect: q.correct_option === 'C', explanation: q.explanation || undefined }] : []),
-        ...(q.option_d ? [{ id: 'D', text: q.option_d, isCorrect: q.correct_option === 'D', explanation: q.explanation || undefined }] : [])
+        ...(q.option_c ? [{ id: 'C', text: q.option_c, isCorrect: q.correct_option === 'C', explanation: q.explanation || undefined }] : [])
       ]
     })) || []
   };

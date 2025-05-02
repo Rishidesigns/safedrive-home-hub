@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 export interface TrainingModule {
@@ -25,8 +26,7 @@ export interface Quiz {
   option_a: string;
   option_b: string;
   option_c: string | null;
-  option_d: string | null;
-  correct_option: 'A' | 'B' | 'C' | 'D';
+  correct_option: 'A' | 'B' | 'C';
   explanation: string | null;
   created_at?: string;
 }

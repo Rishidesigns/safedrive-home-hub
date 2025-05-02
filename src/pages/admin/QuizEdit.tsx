@@ -38,8 +38,7 @@ const quizSchema = z.object({
   option_a: z.string().min(1, "Option A is required"),
   option_b: z.string().min(1, "Option B is required"),
   option_c: z.string().optional(),
-  option_d: z.string().optional(),
-  correct_option: z.enum(['A', 'B', 'C', 'D']),
+  correct_option: z.enum(['A', 'B', 'C']),
   explanation: z.string().optional()
 });
 
@@ -71,7 +70,6 @@ const QuizEdit: React.FC = () => {
       option_a: '',
       option_b: '',
       option_c: '',
-      option_d: '',
       correct_option: 'A' as const,
       explanation: ''
     }
@@ -85,9 +83,7 @@ const QuizEdit: React.FC = () => {
         option_a: quiz.option_a,
         option_b: quiz.option_b,
         option_c: quiz.option_c || '',
-        // Check if option_d exists on the quiz object before accessing it
-        option_d: quiz.option_d !== undefined ? quiz.option_d : '',
-        correct_option: quiz.correct_option as 'A' | 'B' | 'C' | 'D',
+        correct_option: quiz.correct_option as 'A' | 'B' | 'C',
         explanation: quiz.explanation || ''
       });
     }
@@ -105,7 +101,6 @@ const QuizEdit: React.FC = () => {
         option_a: data.option_a,
         option_b: data.option_b,
         option_c: data.option_c || null,
-        option_d: data.option_d || null,
         correct_option: data.correct_option,
         explanation: data.explanation || null
       };
@@ -140,7 +135,6 @@ const QuizEdit: React.FC = () => {
         option_a: data.option_a,
         option_b: data.option_b,
         option_c: data.option_c || null,
-        option_d: data.option_d || null,
         correct_option: data.correct_option,
         explanation: data.explanation || null
       };
@@ -257,20 +251,6 @@ const QuizEdit: React.FC = () => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="option_d"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Option D (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Fourth option" {...field} value={field.value || ''} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
 
           <FormField
@@ -289,7 +269,6 @@ const QuizEdit: React.FC = () => {
                     <SelectItem value="A">Option A</SelectItem>
                     <SelectItem value="B">Option B</SelectItem>
                     <SelectItem value="C">Option C</SelectItem>
-                    <SelectItem value="D">Option D</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
